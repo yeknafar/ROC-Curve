@@ -1,4 +1,5 @@
-# roc curve and auc
+import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix
@@ -28,7 +29,10 @@ net.compile(optimizer=  "sgd",
 h = net.fit(trainX, trainy, batch_size=32, epochs=15)
 
 preds = net.predict(testX).ravel()
-
+float_preds = np.rint(preds)
+round_pred = float_preds.astype("int")
+print(round_pred)
+print(confusion_matrix(testy, round_pred))
 auc_mlp = roc_auc_score(testy, preds)
 auc_random = roc_auc_score(testy, ns_probs)
 print(np.zeros(shape = testy.shape))
