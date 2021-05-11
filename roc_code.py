@@ -2,7 +2,7 @@ import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix
+from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix, precision_recall_curve
 from matplotlib import pyplot
 from tensorflow.keras import models
 from tensorflow.keras import layers
@@ -32,7 +32,8 @@ preds = net.predict(testX).ravel()
 float_preds = np.rint(preds)
 round_pred = float_preds.astype("int")
 print(round_pred)
-print(confusion_matrix(testy, round_pred))
+tn, fp, fn, tp = confusion_matrix(testy, round_pred))
+
 auc_mlp = roc_auc_score(testy, preds)
 auc_random = roc_auc_score(testy, ns_probs)
 print(np.zeros(shape = testy.shape))
@@ -46,3 +47,5 @@ plt.plot(random_fpr, random_tpr, linestyle="-", label = "random")
 plt.plot(mlp_fpr, mlp_tpr, linestyle="--", label = "mlp")
 plt.legend()
 plt.show()
+
+precision, recall, th = precision_recall_curve(testy, preds)
