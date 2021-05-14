@@ -4,8 +4,7 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix, precision_recall_curve
 from matplotlib import pyplot
-from tensorflow.keras import models
-from tensorflow.keras import layers
+from tensorflow.keras import models, layers
 from tensorflow.keras.utils import to_categorical
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,7 +12,6 @@ import matplotlib.pyplot as plt
 X, y = make_classification(n_samples=1000, n_classes=2, random_state=1)
 trainX, testX, trainy, testy = train_test_split(X, y, test_size=0.5, random_state=2)
 
-ns_probs = np.zeros(shape = len(testy))
 
 inputs = layers.Input(shape = (20,))
 x = layers.Dense(20, activation = "relu")(inputs)
@@ -34,6 +32,10 @@ round_pred = float_preds.astype("int")
 print(round_pred)
 tn, fp, fn, tp = confusion_matrix(testy, round_pred))
 
+acc = (tn + tn)/ (tn+fp+fn+tp)
+print(acc)
+
+ns_probs = np.zeros(shape = len(testy))
 auc_mlp = roc_auc_score(testy, preds)
 auc_random = roc_auc_score(testy, ns_probs)
 print(np.zeros(shape = testy.shape))
@@ -47,5 +49,3 @@ plt.plot(random_fpr, random_tpr, linestyle="-", label = "random")
 plt.plot(mlp_fpr, mlp_tpr, linestyle="--", label = "mlp")
 plt.legend()
 plt.show()
-
-precision, recall, th = precision_recall_curve(testy, preds)
